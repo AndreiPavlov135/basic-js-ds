@@ -10,10 +10,6 @@ class BinarySearchTree {
   root() {
     return this.roots;
   }
-  // root() {
-  //   throw new NotImplementedError("Not implemented");
-  //   // remove line with error and write your code here
-  // }
 
   add(data) {
     let newNode = new Node(data);
@@ -39,29 +35,77 @@ class BinarySearchTree {
     }
   }
 
-  has(/* data */) {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+  find(data) {
+    return search(this.roots, data);
+    function search(node, data) {
+      if (node === null) {
+        return null;
+      } else if (data < node.data) {
+        return search(node.left, data);
+      } else if (data > node.data) {
+        return search(node.right, data);
+      } else {
+        return node;
+      }
+    }
   }
 
-  find(/* data */) {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+  has(data) {
+    if (this.find(data) === null) return false;
+    else return true;
   }
 
-  remove(/* data */) {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+  remove(data) {
+    this.roots = removeNode(this.roots, data);
+    function removeNode(node, data) {
+      if (node === null) {
+        return null;
+      } else if (data < node.data) {
+        node.left = removeNode(node.left, data);
+        return node;
+      } else if (data > node.data) {
+        node.right = removeNode(node.right, data);
+        return node;
+      } else {
+        if (node.left === null && node.right === null) {
+          node = null;
+          return node;
+        }
+
+        if (node.left === null) {
+          node = node.right;
+          return node;
+        } else if (node.right === null) {
+          node = node.left;
+          return node;
+        }
+
+        let newNode = minNode(node.right);
+        node.data = newNode.data;
+        node.right = removeNode(node.right, newNode.data);
+        return node;
+        function minNode(node) {
+          if (node.left === null) return node;
+          else return minNode(node.left);
+        }
+      }
+    }
   }
 
   min() {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+    return minNode(this.roots).data;
+    function minNode(node) {
+      if (node.left === null) return node;
+      else return minNode(node.left);
+    }
   }
 
   max() {
-    throw new NotImplementedError("Not implemented");
-    // remove line with error and write your code here
+    return maxNode(this.roots).data;
+    function maxNode(node) {
+      if (node.right === null) return node;
+      else return maxNode(node.right);
+    }
   }
 }
 
